@@ -1,0 +1,32 @@
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<div style="padding: 20">
+    <h1>Tambah Barang +</h1>
+    <input type="text" placeholder="Nama barang" id="nama_barang"> <br /><br />
+    <input type="text" placeholder="Banyak barang" id="banyak_barang"><br /><br />
+    <input type="button" id="save_btn" value="Simpan" onclick="tambah_guru()">
+</div>
+
+<script>
+    function tambah_guru() {
+        const nama_barang = document.getElementById("nama_barang").value;
+        const banyak_barang = document.getElementById("banyak_barang").value;
+        $.ajax({
+            url: 'http://localhost:5000/tambah_products',
+            method: "POST",
+            data: {
+                nama_barang: nama_barang,
+                banyak_barang: banyak_barang,
+            },
+            success: function (result) {
+                if(result.success){
+                    alert("Data berhasil dimasukan")
+                    document.getElementById("nama_barang").value = "";
+                    document.getElementById("banyak_barang").value = "";
+                    window.location.href = "/";
+                }else{
+                    alert("Gagal")
+                }
+            }
+        })
+    }
+</script>

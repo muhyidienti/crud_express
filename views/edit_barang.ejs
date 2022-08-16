@@ -1,0 +1,33 @@
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<div style="padding: 20">
+    <h1>Edit Barang </h1>
+    <input type="text" placeholder="Nama Guru" id="nama_barang" value="<%=nama_barang%>"> <br /><br />
+    <input type="text" placeholder="Mapel Guru" id="banyak_barang" value="<%=banyak_barang%>"><br /><br />
+
+
+    <input type="button" id="save_btn" value="Simpan" onclick="edit_barang()">
+</div>
+
+<script>
+    function edit_barang() {
+        const nama_barang= document.getElementById("nama_barang").value
+        const banyak_barang = document.getElementById("banyak_barang").value
+        $.ajax({
+            url: 'http://localhost:5000/edit_barang',
+            method: "POST",
+            data: {
+                id: '<%= id %>',
+                nama_barang: nama_barang,
+                banyak_barang: banyak_barang,
+            },
+            success: function (result) {
+                if (result.success) {
+                    alert("Data berhasil diperbarui")
+                    window.location.href = "/";
+                } else {
+                    alert("Gagal")
+                }
+            }
+        })
+    }
+</script>

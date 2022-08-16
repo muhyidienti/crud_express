@@ -1,0 +1,66 @@
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<div style="padding: 20">
+    <h1>Data Barang</h1>
+    <a href="/tambah_products">+ Tambah Barang</a>
+    <table class="table" id="table_barang">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nama</th>
+                <th scope="col">Qty</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        const url = "http://localhost:5000/products"
+        $.ajax({
+            url: url,
+            method: "GET",
+            resultType: "JSON",
+            success: function (results) {
+                const table = document.getElementById("table_barang")
+                const result_data = results.data
+                for (var i = 0; i < result_data.length; i++) {
+                    var data = result_data[i]
+                    console.log(data)
+                    var row = table.insertRow(i + 1)
+                    var no = row.insertCell(0)
+                    var nama = row.insertCell(1)
+                    var mapel = row.insertCell(2)
+                    var action = row.insertCell(3)
+                    no.innerHTML = i + 1
+                    nama.innerHTML = data.nama
+                    mapel.innerHTML = data.qty
+                    const params_get = `id=${data.id}&name=${data.nama}&mapel=${data.qty}`
+                    action.innerHTML = `<a href='/edit_barang?${params_get}'>Edit</a> 
+                    |<button  onclick="delete_barang(${data.id})">Delete</button> `
+                }
+            }
+        })
+    })
+
+    function delete_barang(id) {
+        const id_barang = id;
+        $.ajax({
+            url: `http://localhost:5000/delete_products/${id_barang}`,
+            method: "DELETE",
+            success: function (result) {
+                if(result.success){
+                    alert("Data berhasil Di Hapus")
+                 
+                    window.location.href = "/";
+                }else{
+                    alert("Gagal")
+                }
+            }
+        })
+    }
+</script>
